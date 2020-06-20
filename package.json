@@ -1,0 +1,50 @@
+{
+  "name": "chat-server",
+  "version": "1.0.0",
+  "description": "this is a server that enable users to register and start conversation with other users",
+  "main": "server.js",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^3.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.19",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yyagoub/chat-server-backend.git"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "nodejs",
+    "node.js",
+    "expressjs",
+    "express.js",
+    "express",
+    "jwt",
+    "mongoose",
+    "mongo",
+    "mongodb",
+    "socketio",
+    "socket.io",
+    "socket"
+  ],
+  "author": "Yousef Yagoub",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yyagoub/chat-server-backend/issues"
+  },
+  "homepage": "https://github.com/yyagoub/chat-server-backend#readme"
+}
