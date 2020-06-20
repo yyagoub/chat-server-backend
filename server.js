@@ -17,13 +17,21 @@ app.use(cors());
 // interceptor: to convert every request.body to JSON object
 app.use(express.json());
 
+// db connection
+require('./config/database');
+
+// public routes
+app.use(require('./controllers/controllers-public'));
+// authenticated routes
+app.use(verifyJwt, require('./controllers/controllers-private'));
+
 const server = http.createServer(app);
 const io = socketio(server);
 io.on('connection', (socket) => {
   // connection started
   socket.on('join', ({ name, room }, callback) => {
+    // test
     const { user, error } = addUser({ id: socket.id, name, room });
-
     if (error) return callback(error);
     socket.emit('message', {
       user: 'admin',
@@ -62,21 +70,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// db connection
-require('./config/database');
-
-// public routes
-app.use(require('./controllers/controllers-public'));
-// authenticated routes
-app.use(verifyJwt, require('./controllers/controllers-private'));
-
 // Server listens on http://localhost:5000
 const port = process.env.PORT;
-/*
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
-*/
+
 // as long as we are using socket.io we need to run `server` instead of `app`
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
