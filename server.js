@@ -3,7 +3,7 @@ const session = require('express-session');
 const socketio = require('socket.io');
 const cors = require('cors');
 const http = require('http');
-//const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo')(session);
 const { verifyJwt } = require('./util/jwtUtil');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 require('dotenv').config();
@@ -66,9 +66,9 @@ io.on('connection', (socket) => {
 require('./config/database');
 
 // public routes
-//app.use(require('./controllers/controllers-public'));
+app.use(require('./controllers/controllers-public'));
 // authenticated routes
-//app.use(verifyJwt, require('./controllers/controllers-private'));
+app.use(verifyJwt, require('./controllers/controllers-private'));
 
 // Server listens on http://localhost:5000
 const port = process.env.PORT;
