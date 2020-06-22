@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { loginValidation } = require('../services/User');
 const { assignJwt } = require('../util/jwtUtil');
 
@@ -22,8 +21,9 @@ router.post('/', async (req, res) => {
     return res.status(422).send('username and password is wrong');
   // create and assing a token
   const token = assignJwt(authenticatedUser);
+  const user = { username: authenticatedUser.username, token };
   res.header('authorization', token);
-  res.send(token);
+  res.send(user);
 });
 
 module.exports = router;
