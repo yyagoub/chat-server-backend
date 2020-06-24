@@ -4,6 +4,16 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const { registerValidation } = require('../services/User');
 
+// get all friends
+router.get('/', async (req, res) => {
+  res.status(200).send('we found them!');
+});
+
+// post new friend if found
+router.post('/', async (req, res) => {
+  res.status(200).send('we found him!');
+});
+/*
 // patch user's username
 router.patch('/', async (req, res) => {
   if (!req.user._id || !req.body) {
@@ -39,5 +49,5 @@ router.delete('/', async (req, res) => {
     }
   }
 });
-
+*/
 module.exports = router;
