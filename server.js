@@ -30,16 +30,18 @@ const io = socketio(server);
 io.on('connection', (socket) => {
   // connection started
   socket.on('join', ({ name, room }, callback) => {
+    //room = 'room';
     // test
     const { user, error } = addUser({ id: socket.id, name, room });
     if (error) return callback(error);
     socket.emit('message', {
-      user: 'admin',
-      text: `${user.name}, welcome to the room ${user.room}`,
+      username: 'admin',
+      context: `${user.name} connected`,
     });
-    socket.broadcast
-      .to(user.room)
-      .emit('message', { user: 'admin', text: `${user.name}, has joind!` });
+    socket.broadcast.to(user.room).emit('message', {
+      username: 'admin',
+      context: `${user.name}, has joind!`,
+    });
     socket.join(user.room);
     io.to(user.room).emit('roomData', {
       room: user.room,
@@ -50,7 +52,7 @@ io.on('connection', (socket) => {
   // test
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit('message', { user: user.name, text: message });
+    io.to(user.room).emit('message', { username: user.name, context: message });
     io.to(user.room).emit('roomData', {
       room: user.room,
       users: getUsersInRoom(user.room),
@@ -64,8 +66,8 @@ io.on('connection', (socket) => {
     const user = removeUser(socket.id);
     if (user)
       io.to(user.room).emit('message', {
-        user: 'admin',
-        text: `${user.name}, has left.`,
+        username: 'admin',
+        context: `${user.name}, has left.`,
       });
   });
 });
