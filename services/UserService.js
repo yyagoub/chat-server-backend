@@ -1,5 +1,5 @@
 const UserModel = require('../models/User');
-const { loginValidation, registerValidation } = require('../services/User');
+const Joi = require('@hapi/joi');
 const User = require('../models/User');
 const { bcryptGenerate, bcryptCompare } = require('../util/bcryptUtil');
 const { assignJwt } = require('../util/jwtUtil');
@@ -21,7 +21,7 @@ const UserService = {
 };
 
 const userAuthentication = async (username, password) => {
-  const { error } = loginValidation({ username, password });
+  const { error } = validateUserSchema({ username, password });
   if (error) throw new Error(error);
   const authenticatedUser = await User.findOne({ username });
   if (!authenticatedUser) throw new Error('username and password is wrong');
@@ -34,12 +34,22 @@ const userAuthentication = async (username, password) => {
 };
 
 const validateNewUser = async ({ username, password }) => {
-  const { error } = registerValidation({ username, password });
+  const { error } = validateUserSchema({ username, password });
   if (error) throw new Error(error.details[0].message);
   const usernameExist = await User.findOne({ username });
   if (usernameExist) throw new Error('username already exists');
   const hashedPassword = await bcryptGenerate(req.body.password);
   return hashedPassword;
+};
+
+const validateUserSchema = (data) => {
+  // create the schema
+  const schema = Joi.object({
+    username: Joi.string().min(3).required(),
+    password: Joi.string().min(3).required(),
+  });
+  // validate the data using the schema
+  return schema.validate(data);
 };
 
 module.exports = UserService;
