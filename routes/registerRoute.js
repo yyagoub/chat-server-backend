@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const registerCtrl = require('../controllers/registerCtrl');
+const UserService = require('../services/UserService');
 
-// post a new user
-router.post('/', registerCtrl.register);
+router.post('/', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await UserService.login(username, password);
+});
 
 module.exports = router;
